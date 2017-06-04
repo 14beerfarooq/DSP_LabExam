@@ -1,0 +1,23 @@
+function y = FirstS (audio,N,percent)
+
+l=length(audio);
+fy = [];
+r = uint32(percent*N);
+FinalDCT = [];
+
+for i=1:N:l
+    chunks = audio(i:min(i+N-1,l));
+    DCT_chunks = (dct(chunks));
+    fy = DCT_chunks(1:min(r,length(DCT_chunks)))';
+    FinalDCT = [FinalDCT fy];  
+end
+
+l_nDCT = length(FinalDCT);
+y = [];
+
+for i=1:r:l_nDCT-r
+    yy = idct(FinalDCT(i:min(i+r,l_nDCT)),N);
+    y = [y yy];
+end
+
+end
