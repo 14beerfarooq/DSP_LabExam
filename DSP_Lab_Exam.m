@@ -111,3 +111,22 @@ xlabel('Frame Size (N)');
 ylabel('SNR');
 grid minor
 ssnrs2
+
+%% Bar Charts for Better Comparison
+figure('Name','SNRs for First Coefficients','NumberTitle','off');
+bar([64 128 256 512],ssnrs);
+title('Compression using First Coefficients');
+xlabel('Number of Frames (N)');
+ylabel('SNR');
+legend('10% DCT Coefficients', '25% DCT Coefficients'...
+    , '50% DCT Coefficients', '75% DCT Coefficients'...
+    ,'location', 'NorthWest');
+
+figure('Name','SNRs for Dominant Coefficients','NumberTitle','off');
+bar([64 128 256 512],ssnrs2);
+title('Compression using Dominant Coefficients');
+xlabel('Number of Frames (N)');
+ylabel('SNR');
+legend('10% DCT Coefficients', '25% DCT Coefficients'...
+    , '50% DCT Coefficients', '75% DCT Coefficients'...
+    ,'location', 'NorthWest');
