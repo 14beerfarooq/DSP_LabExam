@@ -16,18 +16,18 @@ end
 
 % Compression by selecting Non-zero Elements and their Indices
 Nonzero_coeff = Final_DCT(Final_DCT~=0);  % Non-zero Elements
-Indices = find(Final_DCT~=0);       % Indices of Non-Zero Elements
+Indices = find(Final_DCT~=0);             % Indices of Non-Zero Elements
 
 % Decompression
-Decompress = zeros(1,max(Indices)); % Create a vector of zeroes
-Decompress(Indices) = Nonzero_coeff;          % Place non-zero elements on their previous positions
+Decompress = zeros(1,max(Indices));  % Create a vector of zeroes
+Decompress(Indices) = Nonzero_coeff; % Place non-zero elements on their previous positions
 
 l_nDCT = length(Decompress);
 Final_IDCT = [];
 
 % Taking IDCT
-for i=1:r:l_nDCT-r
-    y = idct(Decompress(i:min(i+r,l_nDCT)),N);
+for i=1:N:l_nDCT-N
+    y = idct(Decompress(i:min(i+N,l_nDCT)),N);
     Final_IDCT = [Final_IDCT y];
 end
 

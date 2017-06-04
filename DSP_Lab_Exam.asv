@@ -1,53 +1,102 @@
+%% Main 
+
 [audio,fs] = audioread('sample.wav');
-
 N = size(audio);
-
 F = [64 128 256 512];      %N
-P = [0.1 0.25 0.50 0.75];  %DCT Coefficients
+P = [0.10 0.25 0.50 0.75];  %DCT Coefficients
 
-ssnrs=[]; %for First Samples 
-ssnrs2=[]; %for Dominant Samples
-for j = 1 : length(P)
-    p = P(j);
+ssnrs=[]; %snrs for First Coefficients 
+ssnrs2=[]; %snrs for Dominant Coefficients
+for j = 1 : length(P) 
+    p = P(j);   %Iterate over DCT Coefficient values
     snrs = [];
     snrs2 = [];
         for i = 1 : length(F)
-            f = F(i);
-            y = FirstS(audio,f,p);
+            f = F(i);  %Iterate over N values
+            y = FirstS(audio,f,p); %Reconstructed sound for First Coefficients
             snrs = [snrs SSNR(audio',y)];
             
+            
             y2 = Dominant(audio,f,p);
-            snrs2 = [snrs2 SSNR(audio',y2)];
+            snrs2 = [snrs2 SSNR(audio',y2)]; %Reconstructed sound for Dominant Coefficients
         end
     ssnrs = [ssnrs;snrs];
     ssnrs2 = [ssnrs2;snrs2];
 end
+
+%% SNRs for FIRST COEFFICIENTS
+
 figure(1)
 subplot(2,2,1);
-stem(F, ssnrs(1,:));
+stem(F, ssnrs(1,:),'filled');
+text(64,1,'N=64','HorizontalAlignment','left');
+text(128,1,'N=128','HorizontalAlignment','left');
+text(256,1,'N=256','HorizontalAlignment','left');
+text(512,1,'N=512','HorizontalAlignment','right');
 title('p=10%');
+xlabel('Frame Size (N)');
+ylabel('SNR');
+grid minor
 subplot(2,2,2);
-stem(F, ssnrs(2,:));
-title('p=25%');
+stem(F, ssnrs(2,:),'filled','r');
+text(64,4,'N=64','HorizontalAlignment','left');
+text(128,4,'N=128','HorizontalAlignment','left');
+text(256,4,'N=256','HorizontalAlignment','left');
+text(512,4,'N=512','HorizontalAlignment','right');
+title('25% DCT Coefficients');
+xlabel('Frame Size (N)');
+ylabel('SNR');
+grid minor
 subplot(2,2,3);
-stem(F, ssnrs(3,:));
+stem(F, ssnrs(3,:),'filled','g');
+text(64,6,'N=64','HorizontalAlignment','left');
+text(128,6,'N=128','HorizontalAlignment','left');
+text(256,6,'N=256','HorizontalAlignment','left');
+text(512,6,'N=512','HorizontalAlignment','right');
 title('p=50%');
+xlabel('Frame Size (N)');
+ylabel('SNR');
+grid minor
 subplot(2,2,4);
-stem(F, ssnrs(4,:));
-title('p=75%')
-
+stem(F, ssnrs(4,:),'filled','m');
+text(64,10,'N=64','HorizontalAlignment','left');
+text(128,10,'N=128','HorizontalAlignment','left');
+text(256,10,'N=256','HorizontalAlignment','left');
+text(512,10,'N=512','HorizontalAlignment','right');
+title('p=75%');
+xlabel('Frame Size (N)');
+ylabel('SNR');
+grid minor 
+ssnrs
+%% SNRs for DOMINANT COEFFICIENTS
 
 figure(2)
-title('Dominant p Samples')
 subplot(2,2,1);
-stem(F, ssnrs2(1,:));
+stem(F, ssnrs2(1,:),'filled');
+
 title('p=10%');
+xlabel('Frame Size (N)');
+ylabel('SNR');
+grid minor
 subplot(2,2,2);
-stem(F, ssnrs2(2,:));
+stem(F, ssnrs2(2,:),'filled','r');
+
 title('p=25%');
+xlabel('Frame Size (N)');
+ylabel('SNR');
+grid minor
 subplot(2,2,3);
-stem(F, ssnrs2(3,:));
+stem(F, ssnrs2(3,:),'filled','g');
+
 title('p=50%');
+xlabel('Frame Size (N)');
+ylabel('SNR');
+grid minor
 subplot(2,2,4);
-stem(F, ssnrs2(4,:));
+stem(F, ssnrs2(4,:),'filled','m');
+
 title('p=75%');
+xlabel('Frame Size (N)');
+ylabel('SNR');
+grid minor
+ssnrs2

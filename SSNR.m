@@ -10,5 +10,5 @@ function SNR = SSNR(Original,Reconstructed)
         Reconstructed = Reconstructed(1:len_O);
     end
     
-    SNR = sum(Original.^2)/sum(((Original-Reconstructed).^2));
+    SNR = 10*log10(sum(Original.^2)/sum(((Original-Reconstructed).^2)));
 end
